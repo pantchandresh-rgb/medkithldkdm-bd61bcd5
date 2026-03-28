@@ -38,7 +38,7 @@ const HeroSection = () => {
             <Button size="lg" className="gradient-primary text-primary-foreground rounded-full px-8 h-14 text-base font-semibold shadow-elevated hover:scale-105 transition-transform">
               Book Now <ArrowRight className="ml-2 w-5 h-5" />
             </Button>
-            <Button size="lg" variant="outline" className="rounded-full px-8 h-14 text-base font-semibold border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground">
+            <Button size="lg" variant="outline" className="rounded-full px-8 h-14 text-base font-semibold border-secondary bg-secondary/10 text-primary-foreground hover:bg-secondary/20 hover:text-primary-foreground">
               <Play className="mr-2 w-5 h-5" /> Explore Services
             </Button>
           </div>

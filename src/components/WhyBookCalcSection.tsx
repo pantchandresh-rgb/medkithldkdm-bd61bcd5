@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Check, MessageCircle, Phone, Calculator, Shield, Clock, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import homeHealthcare from "@/assets/home-healthcare.jpg";
+import heroImg from "@/assets/hero-doctor.jpg";
 
 const areas: Record<string, string[]> = {
   Haldwani: ["Rampur Road", "Kaladhungi Road", "Nainital Road", "Mukhani", "Heera Nagar", "Kusumkhera", "Panchakki", "Bareilly Road", "Transport Nagar"],
@@ -29,6 +30,11 @@ const WhyBookCalcSection = () => {
   const [bookName, setBookName] = useState("");
   const [bookPhone, setBookPhone] = useState("");
   const [bookArea, setBookArea] = useState("");
+  const [bookAddress, setBookAddress] = useState("");
+  const [bookService, setBookService] = useState("");
+  const [bookDate, setBookDate] = useState("");
+  const [bookTime, setBookTime] = useState("");
+  const [bookNotes, setBookNotes] = useState("");
 
   const getPrice = () => {
     const s = services.find(sv => sv.name === calcService);
@@ -37,7 +43,7 @@ const WhyBookCalcSection = () => {
 
   const handleBook = () => {
     if (!bookName || !bookPhone || !bookArea) return;
-    const msg = `Hi MedKit! I'm ${bookName}. I'd like to book a service in ${bookArea}. My phone: ${bookPhone}`;
+    const msg = `Hi MedKit! I'm ${bookName}. I'd like to book ${bookService || "a service"} in ${bookArea}. Address: ${bookAddress}. Date: ${bookDate}, Time: ${bookTime}. Notes: ${bookNotes}. Phone: ${bookPhone}`;
     window.open(`https://wa.me/919999999999?text=${encodeURIComponent(msg)}`, "_blank");
   };
 
@@ -45,8 +51,14 @@ const WhyBookCalcSection = () => {
   const inputClasses = selectClasses;
 
   return (
-    <section id="booking" className="py-24 bg-muted/50">
-      <div className="container">
+    <section id="booking" className="relative py-24 overflow-hidden">
+      {/* Hero background */}
+      <div className="absolute inset-0">
+        <img src={heroImg} alt="" className="w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-background/90 backdrop-blur-sm" />
+      </div>
+
+      <div className="container relative z-10">
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-16 space-y-4">
           <span className="text-sm font-semibold tracking-widest uppercase text-primary">Book & Calculate</span>
           <h2 className="text-4xl md:text-5xl font-display font-bold text-foreground">
@@ -78,9 +90,9 @@ const WhyBookCalcSection = () => {
           </motion.div>
 
           {/* Book Service */}
-          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="glass rounded-2xl p-8 shadow-card space-y-6">
+          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="glass rounded-2xl p-8 shadow-card space-y-5">
             <h3 className="text-2xl font-display font-bold text-foreground">Book Service</h3>
-            <div className="space-y-4">
+            <div className="space-y-3">
               <input type="text" placeholder="Your Name" value={bookName} onChange={e => setBookName(e.target.value)} className={inputClasses} />
               <input type="tel" placeholder="Phone Number" value={bookPhone} onChange={e => setBookPhone(e.target.value)} className={inputClasses} />
               <select value={bookArea} onChange={e => setBookArea(e.target.value)} className={selectClasses}>
@@ -91,6 +103,16 @@ const WhyBookCalcSection = () => {
                   </optgroup>
                 ))}
               </select>
+              <input type="text" placeholder="Enter Full Address" value={bookAddress} onChange={e => setBookAddress(e.target.value)} className={inputClasses} />
+              <select value={bookService} onChange={e => setBookService(e.target.value)} className={selectClasses}>
+                <option value="">Select Service</option>
+                {services.map(s => <option key={s.name} value={s.name}>{s.name}</option>)}
+              </select>
+              <div className="grid grid-cols-2 gap-3">
+                <input type="date" value={bookDate} onChange={e => setBookDate(e.target.value)} className={inputClasses} />
+                <input type="time" value={bookTime} onChange={e => setBookTime(e.target.value)} className={inputClasses} />
+              </div>
+              <textarea placeholder="Additional Notes (optional)" value={bookNotes} onChange={e => setBookNotes(e.target.value)} rows={2} className={`${inputClasses} h-auto py-3 resize-none`} />
             </div>
             <div className="flex items-center gap-3 p-4 rounded-xl bg-accent border border-primary/10">
               <MessageCircle className="w-6 h-6 text-secondary flex-shrink-0" />
