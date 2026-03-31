@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Heart, Shield, Clock, Phone, Star, CheckCircle, UserCheck, Activity, Stethoscope } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import elderlyCareImg from "@/assets/elderly-care.jpg";
 
 const plans = [
   {
