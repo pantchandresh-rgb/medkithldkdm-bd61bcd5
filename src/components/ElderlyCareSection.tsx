@@ -105,10 +105,11 @@ const ElderlyCareSection = () => (
             </div>
 
             <h3 className="text-xl font-display font-bold text-foreground mb-1">{plan.name}</h3>
-            <div className="flex items-baseline gap-1 mb-6">
+            <div className="flex items-baseline gap-1 mb-1">
               <span className="text-4xl font-display font-bold text-primary">₹{plan.price.toLocaleString("en-IN")}</span>
               <span className="text-muted-foreground text-sm">/month</span>
             </div>
+            <p className="text-xs font-semibold text-amber-600 mb-5">⚡ Limited slots available this week</p>
 
             <ul className="space-y-3 flex-1 mb-8">
               {plan.features.map(({ icon: Icon, text }) => (
