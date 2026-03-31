@@ -50,8 +50,10 @@ const ServicesSection = () => {
               <p className="text-sm text-muted-foreground mb-4 flex-1">{s.desc}</p>
               <div className="flex items-center justify-between mt-auto">
                 <span className="text-2xl font-bold text-primary">₹{s.price}</span>
-                <Button size="sm" className="rounded-full gradient-primary text-primary-foreground hover:scale-105 transition-transform">
-                  Book Now
+                <Button asChild size="sm" className="rounded-full gradient-primary text-primary-foreground hover:scale-105 transition-transform">
+                  <a href={`https://wa.me/919818185270?text=${encodeURIComponent(`Hi MedKit! I want to book ${s.title} (₹${s.price}). Please confirm.`)}`} target="_blank" rel="noopener noreferrer">
+                    Book Now
+                  </a>
                 </Button>
               </div>
             </motion.div>

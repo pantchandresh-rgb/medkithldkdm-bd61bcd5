@@ -35,11 +35,15 @@ const HeroSection = () => {
           </p>
 
           <div className="flex flex-wrap gap-4">
-            <Button size="lg" className="gradient-primary text-primary-foreground rounded-full px-8 h-14 text-base font-semibold shadow-elevated hover:scale-105 transition-transform">
-              Book Now <ArrowRight className="ml-2 w-5 h-5" />
+            <Button asChild size="lg" className="gradient-primary text-primary-foreground rounded-full px-8 h-14 text-base font-semibold shadow-elevated hover:scale-105 transition-transform">
+              <a href="https://wa.me/919818185270?text=Hi%20MedKit!%20I%20want%20to%20book%20a%20service." target="_blank" rel="noopener noreferrer">
+                Book Now <ArrowRight className="ml-2 w-5 h-5" />
+              </a>
             </Button>
-            <Button size="lg" variant="outline" className="rounded-full px-8 h-14 text-base font-semibold border-secondary bg-secondary/10 text-primary-foreground hover:bg-secondary/20 hover:text-primary-foreground">
-              <Play className="mr-2 w-5 h-5" /> Explore Services
+            <Button asChild size="lg" variant="outline" className="rounded-full px-8 h-14 text-base font-semibold border-secondary bg-secondary/10 text-primary-foreground hover:bg-secondary/20 hover:text-primary-foreground">
+              <a href="#services">
+                <Play className="mr-2 w-5 h-5" /> Explore Services
+              </a>
             </Button>
           </div>
 

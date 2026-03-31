@@ -45,7 +45,7 @@ const WhyBookCalcSection = () => {
   const handleBook = () => {
     if (!bookName || !bookPhone || !bookArea) return;
     const msg = `Hi MedKit! I'm ${bookName}. I'd like to book ${bookService || "a service"} in ${bookArea}. Address: ${bookAddress}. Date: ${bookDate}, Time: ${bookTime}. Notes: ${bookNotes}. Phone: ${bookPhone}`;
-    window.open(`https://wa.me/919999999999?text=${encodeURIComponent(msg)}`, "_blank");
+    window.open(`https://wa.me/919818185270?text=${encodeURIComponent(msg)}`, "_blank");
   };
 
   const selectClasses = "w-full h-12 rounded-xl border border-border bg-card px-4 text-foreground focus:ring-2 focus:ring-primary/30 focus:border-primary outline-none transition";
