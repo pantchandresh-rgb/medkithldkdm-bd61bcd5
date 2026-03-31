@@ -4,6 +4,7 @@ import { Check, MessageCircle, Phone, Calculator, Shield, Clock, Star } from "lu
 import { Button } from "@/components/ui/button";
 import homeHealthcare from "@/assets/home-healthcare.jpg";
 import heroImg from "@/assets/hero-doctor.jpg";
+import priceCalcImg from "@/assets/price-calculator.jpg";
 
 const areas: Record<string, string[]> = {
   Haldwani: ["Rampur Road", "Kaladhungi Road", "Nainital Road", "Mukhani", "Heera Nagar", "Kusumkhera", "Panchakki", "Bareilly Road", "Transport Nagar"],
