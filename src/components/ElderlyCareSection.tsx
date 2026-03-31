@@ -153,8 +153,18 @@ const ElderlyCareSection = () => (
           size="lg"
           className="rounded-full gradient-primary text-primary-foreground px-10 h-14 text-lg font-semibold shadow-elevated hover:scale-105 transition-transform"
         >
-          <a href="https://wa.me/919818185270" target="_blank" rel="noopener noreferrer">
-            💬 Get Care Plan on WhatsApp
+          <a href="https://wa.me/919818185270?text=Hi%20MedKit!%20I%20want%20to%20know%20about%20Elderly%20Care%20Plans." target="_blank" rel="noopener noreferrer">
+            💬 Talk to Expert &amp; Get Plan
+          </a>
+        </Button>
+        <Button
+          asChild
+          size="lg"
+          variant="outline"
+          className="rounded-full border-primary text-primary px-10 h-14 text-lg font-semibold hover:bg-primary hover:text-primary-foreground transition-all"
+        >
+          <a href="tel:+919818185270">
+            📞 Call: 9818185270
           </a>
         </Button>
         <p className="flex items-center justify-center gap-2 text-muted-foreground text-sm">
