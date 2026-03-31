@@ -63,6 +63,7 @@ const ElderlyCareSection = () => (
         <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
           Affordable monthly care plans designed for elderly safety, comfort, and regular health monitoring.
         </p>
+        <p className="text-foreground font-medium text-base">👉 Ensure your parents are cared for even when you're not around.</p>
         <motion.img
           src={elderlyCareImg}
           alt="Elderly care at home with a caring nurse"
