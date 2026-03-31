@@ -4,6 +4,7 @@ import { Check, MessageCircle, Phone, Calculator, Shield, Clock, Star } from "lu
 import { Button } from "@/components/ui/button";
 import homeHealthcare from "@/assets/home-healthcare.jpg";
 import heroImg from "@/assets/hero-doctor.jpg";
+import priceCalcImg from "@/assets/price-calculator.jpg";
 
 const areas: Record<string, string[]> = {
   Haldwani: ["Rampur Road", "Kaladhungi Road", "Nainital Road", "Mukhani", "Heera Nagar", "Kusumkhera", "Panchakki", "Bareilly Road", "Transport Nagar"],
@@ -66,12 +67,12 @@ const WhyBookCalcSection = () => {
           </h2>
         </motion.div>
 
-        <div className="grid lg:grid-cols-3 gap-8">
+        <div className="grid lg:grid-cols-3 gap-8 items-stretch">
           {/* Why Choose Us */}
-          <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="glass rounded-2xl p-8 shadow-card space-y-6">
-            <h3 className="text-2xl font-display font-bold text-foreground">Why Choose Us</h3>
-            <img src={homeHealthcare} alt="Home healthcare" loading="lazy" width={800} height={600} className="rounded-xl w-full h-48 object-cover" />
-            <ul className="space-y-3">
+          <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="glass rounded-2xl p-8 shadow-card flex flex-col">
+            <h3 className="text-2xl font-display font-bold text-foreground mb-6">Why Choose Us</h3>
+            <img src={homeHealthcare} alt="Home healthcare" loading="lazy" width={800} height={600} className="rounded-xl w-full h-48 object-cover mb-6" />
+            <ul className="space-y-3 flex-1">
               {["Certified Healthcare Professionals", "Transparent Pricing", "Fast Service", "Home Comfort", "Trusted by Local Families", "Instant WhatsApp Booking"].map(item => (
                 <li key={item} className="flex items-center gap-3 text-foreground">
                   <Check className="w-5 h-5 text-secondary flex-shrink-0" />
@@ -79,20 +80,24 @@ const WhyBookCalcSection = () => {
                 </li>
               ))}
             </ul>
-            <div className="flex items-center gap-2 text-amber-500">
+            <div className="flex items-center gap-2 text-amber-500 mt-6">
               <Star className="w-5 h-5 fill-current" />
               <span className="font-bold text-foreground">4.8 Rated</span>
               <span className="text-muted-foreground text-sm">| 100+ Happy Patients</span>
             </div>
-            <Button className="w-full rounded-xl gradient-primary text-primary-foreground h-12 font-semibold hover:scale-[1.02] transition-transform">
+            <Button className="w-full rounded-xl gradient-primary text-primary-foreground h-12 font-semibold hover:scale-[1.02] transition-transform mt-4">
               <Phone className="mr-2 w-4 h-4" /> Talk to Expert
             </Button>
           </motion.div>
 
           {/* Book Service */}
-          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="glass rounded-2xl p-8 shadow-card space-y-5">
+          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="glass rounded-2xl p-8 shadow-card flex flex-col">
             <h3 className="text-2xl font-display font-bold text-foreground">Book Service</h3>
-            <div className="space-y-3">
+            <div className="flex items-center gap-2 mt-2 mb-5">
+              <MessageCircle className="w-4 h-4 text-secondary flex-shrink-0" />
+              <p className="text-sm text-muted-foreground font-medium">⚡ Need quick service? Book instantly on WhatsApp</p>
+            </div>
+            <div className="space-y-3 flex-1">
               <input type="text" placeholder="Your Name" value={bookName} onChange={e => setBookName(e.target.value)} className={inputClasses} />
               <input type="tel" placeholder="Phone Number" value={bookPhone} onChange={e => setBookPhone(e.target.value)} className={inputClasses} />
               <select value={bookArea} onChange={e => setBookArea(e.target.value)} className={selectClasses}>
@@ -114,22 +119,17 @@ const WhyBookCalcSection = () => {
               </div>
               <textarea placeholder="Additional Notes (optional)" value={bookNotes} onChange={e => setBookNotes(e.target.value)} rows={2} className={`${inputClasses} h-auto py-3 resize-none`} />
             </div>
-            <div className="flex items-center gap-3 p-4 rounded-xl bg-accent border border-primary/10">
-              <MessageCircle className="w-6 h-6 text-secondary flex-shrink-0" />
-              <p className="text-sm text-accent-foreground font-medium">
-                ⚡ Need quick service? Book instantly on WhatsApp
-              </p>
-            </div>
-            <Button onClick={handleBook} className="w-full rounded-xl gradient-primary text-primary-foreground h-14 text-lg font-semibold hover:scale-[1.02] transition-transform">
+            <Button onClick={handleBook} className="w-full rounded-xl gradient-primary text-primary-foreground h-14 text-lg font-semibold hover:scale-[1.02] transition-transform mt-5">
               Book Now
             </Button>
           </motion.div>
 
           {/* Price Calculator */}
-          <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="glass rounded-2xl p-8 shadow-card space-y-6">
-            <h3 className="text-2xl font-display font-bold text-foreground flex items-center gap-2">
+          <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="glass rounded-2xl p-8 shadow-card flex flex-col">
+            <h3 className="text-2xl font-display font-bold text-foreground flex items-center gap-2 mb-6">
               <Calculator className="w-6 h-6 text-primary" /> Price Calculator
             </h3>
+            <img src={priceCalcImg} alt="Price calculator" loading="lazy" width={800} height={600} className="rounded-xl w-full h-48 object-cover mb-6" />
             <div className="space-y-4">
               <select value={calcService} onChange={e => { setCalcService(e.target.value); setCalcPrice(null); }} className={selectClasses}>
                 <option value="">Select Service</option>
@@ -145,20 +145,20 @@ const WhyBookCalcSection = () => {
             </div>
 
             {calcPrice !== null && (
-              <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="text-center p-6 rounded-xl bg-accent border border-primary/10">
+              <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="text-center p-6 rounded-xl bg-accent border border-primary/10 mt-6">
                 <p className="text-sm text-muted-foreground mb-1">Estimated Price</p>
                 <p className="text-4xl font-display font-bold text-primary">₹{calcPrice}</p>
               </motion.div>
             )}
 
-            <ul className="space-y-2">
+            <ul className="space-y-2 mt-6 flex-1">
               {[{ icon: Shield, text: "No hidden charges" }, { icon: Clock, text: "Pay after service" }, { icon: Check, text: "Quick response team" }].map(({ icon: Icon, text }) => (
                 <li key={text} className="flex items-center gap-3 text-foreground text-sm">
                   <Icon className="w-4 h-4 text-secondary" /> {text}
                 </li>
               ))}
             </ul>
-            <Button variant="outline" className="w-full rounded-xl h-12 font-semibold border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-colors">
+            <Button variant="outline" className="w-full rounded-xl h-12 font-semibold border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-colors mt-4">
               Book Now
             </Button>
           </motion.div>
