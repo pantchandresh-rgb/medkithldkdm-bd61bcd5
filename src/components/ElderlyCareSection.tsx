@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Heart, Shield, Clock, Phone, Star, CheckCircle, UserCheck, Activity, Stethoscope } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import elderlyCareImg from "@/assets/elderly-care.jpg";
 
 const plans = [
   {
@@ -62,6 +63,17 @@ const ElderlyCareSection = () => (
         <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
           Affordable monthly care plans designed for elderly safety, comfort, and regular health monitoring.
         </p>
+        <motion.img
+          src={elderlyCareImg}
+          alt="Elderly care at home with a caring nurse"
+          loading="lazy"
+          width={1024}
+          height={640}
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          className="mx-auto rounded-2xl shadow-elevated max-w-2xl w-full h-auto object-cover"
+        />
       </motion.div>
 
       <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
