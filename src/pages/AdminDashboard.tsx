@@ -102,7 +102,8 @@ const AdminDashboard = () => {
           {sidebarItems.map((item) => (
             <button
               key={item.label}
-              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${item.active ? "bg-primary/10 text-primary" : "text-muted-foreground hover:bg-muted hover:text-foreground"}`}
+              onClick={() => !item.badge && setActiveTab(item.label)}
+              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${activeTab === item.label ? "bg-primary/10 text-primary" : "text-muted-foreground hover:bg-muted hover:text-foreground"} ${item.badge ? "opacity-60 cursor-not-allowed" : ""}`}
             >
               <item.icon className="w-5 h-5" />
               {item.label}
