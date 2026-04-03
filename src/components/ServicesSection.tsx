@@ -1,6 +1,8 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Syringe, Droplets, Heart, UserCheck, Activity, Thermometer, TestTube, Bandage } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import BookingFormDialog from "@/components/BookingFormDialog";
 
 const services = [
   { icon: Syringe, title: "Injection at Home", desc: "Safe & sterile injections by certified nurses at your doorstep.", price: 299 },
@@ -14,6 +16,8 @@ const services = [
 ];
 
 const ServicesSection = () => {
+  const [selectedService, setSelectedService] = useState<{ title: string; price: number } | null>(null);
+
   return (
     <section id="services" className="py-24 bg-background">
       <div className="container">
@@ -50,16 +54,27 @@ const ServicesSection = () => {
               <p className="text-sm text-muted-foreground mb-4 flex-1">{s.desc}</p>
               <div className="flex items-center justify-between mt-auto">
                 <span className="text-2xl font-bold text-primary">₹{s.price}</span>
-                <Button asChild size="sm" className="rounded-full gradient-primary text-primary-foreground hover:scale-105 transition-transform">
-                  <a href={`https://wa.me/919818185270?text=${encodeURIComponent(`Hi MedKit! I want to book ${s.title} (₹${s.price}). Please confirm.`)}`} target="_blank" rel="noopener noreferrer">
-                    Book Now
-                  </a>
+                <Button
+                  size="sm"
+                  className="rounded-full gradient-primary text-primary-foreground hover:scale-105 transition-transform"
+                  onClick={() => setSelectedService({ title: s.title, price: s.price })}
+                >
+                  Book Now
                 </Button>
               </div>
             </motion.div>
           ))}
         </div>
       </div>
+
+      {selectedService && (
+        <BookingFormDialog
+          open={!!selectedService}
+          onOpenChange={(open) => !open && setSelectedService(null)}
+          serviceName={selectedService.title}
+          servicePrice={selectedService.price}
+        />
+      )}
     </section>
   );
 };
