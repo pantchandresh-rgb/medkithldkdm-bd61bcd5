@@ -61,6 +61,7 @@ const statusStyles: Record<BookingStatus, string> = {
 };
 
 const AdminDashboard = () => {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("Dashboard");
   const [searchQuery, setSearchQuery] = useState("");
   const [cityFilter, setCityFilter] = useState("all");
