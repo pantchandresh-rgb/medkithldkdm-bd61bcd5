@@ -17,10 +17,10 @@ import {
 } from "@/components/ui/table";
 
 const sidebarItems = [
-  { icon: LayoutDashboard, label: "Dashboard", active: true },
-  { icon: BookOpen, label: "Bookings", active: false },
-  { icon: BarChart3, label: "Analytics", active: false, badge: "Soon" },
-  { icon: Settings, label: "Settings", active: false, badge: "Soon" },
+  { icon: LayoutDashboard, label: "Dashboard" },
+  { icon: BookOpen, label: "Bookings" },
+  { icon: BarChart3, label: "Analytics", badge: "Soon" },
+  { icon: Settings, label: "Settings", badge: "Soon" },
 ];
 
 const summaryCards = [
