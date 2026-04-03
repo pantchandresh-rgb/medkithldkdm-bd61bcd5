@@ -37,8 +37,11 @@ const Footer = () => (
           </ul>
         </div>
       </div>
-      <div className="border-t border-primary-foreground/10 mt-12 pt-8 text-center text-sm">
-        © {new Date().getFullYear()} MedKit. All rights reserved.
+      <div className="border-t border-primary-foreground/10 mt-12 pt-8 flex flex-col sm:flex-row items-center justify-between gap-2 text-sm">
+        <span>© {new Date().getFullYear()} MedKit. All rights reserved.</span>
+        <a href="/admin" className="text-primary-foreground/40 hover:text-primary-foreground/70 transition-colors text-xs">
+          Admin Panel
+        </a>
       </div>
     </div>
   </footer>
