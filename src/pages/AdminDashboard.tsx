@@ -163,6 +163,9 @@ const AdminDashboard = () => {
             <h1 className="text-lg font-display font-bold text-foreground">Dashboard</h1>
           </div>
           <div className="flex items-center gap-3">
+            <a href="/" className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1.5">
+              <LogOut className="w-4 h-4" /> Back to Website
+            </a>
             <Badge className="gradient-primary border-0 text-primary-foreground">Admin</Badge>
           </div>
         </header>
