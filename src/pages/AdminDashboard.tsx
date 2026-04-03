@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { getBookings, updateBookingStatus as updateStoredStatus, type BookingEntry } from "@/lib/bookings";
 import { motion } from "framer-motion";
 import {
   CalendarCheck, Clock, CheckCircle2, Activity,
