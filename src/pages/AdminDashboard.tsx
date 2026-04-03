@@ -67,7 +67,26 @@ const AdminDashboard = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [cityFilter, setCityFilter] = useState("all");
   const [serviceFilter, setServiceFilter] = useState("all");
-  const [bookings, setBookings] = useState(mockBookings);
+  const [bookings, setBookings] = useState<Booking[]>([]);
+
+  // Load website bookings from localStorage + mock data
+  useEffect(() => {
+    const storedBookings = getBookings();
+    const websiteBookings: Booking[] = storedBookings.map((b, i) => ({
+      id: 1000 + i,
+      storageId: b.id,
+      name: b.name,
+      phone: b.phone,
+      city: b.city,
+      area: b.area,
+      service: b.service,
+      address: b.address,
+      technician: b.technician,
+      dateTime: b.dateTime,
+      status: b.status as BookingStatus,
+    }));
+    setBookings([...websiteBookings, ...mockBookings]);
+  }, []);
 
   const filtered = bookings.filter((b) => {
     const matchSearch = !searchQuery || b.name.toLowerCase().includes(searchQuery.toLowerCase()) || b.phone.includes(searchQuery);
@@ -76,7 +95,18 @@ const AdminDashboard = () => {
     return matchSearch && matchCity && matchService;
   });
 
-  const markCompleted = (id: number) => setBookings((prev) => prev.map((b) => b.id === id ? { ...b, status: "Completed" as BookingStatus } : b));
+  const markCompleted = (id: number) => {
+    setBookings((prev) => prev.map((b) => {
+      if (b.id === id) {
+        // Also update localStorage if it's a website booking
+        if ((b as any).storageId) {
+          updateStoredStatus((b as any).storageId, "Completed");
+        }
+        return { ...b, status: "Completed" as BookingStatus };
+      }
+      return b;
+    }));
+  };
 
   const exportCSV = () => {
     const headers = "Name,Phone,City,Area,Service,Address,Technician,Date,Status\n";
@@ -88,8 +118,9 @@ const AdminDashboard = () => {
     a.click();
   };
 
-  const cities = [...new Set(mockBookings.map((b) => b.city))];
-  const services = [...new Set(mockBookings.map((b) => b.service))];
+  const allBookingsForFilters = [...mockBookings, ...bookings];
+  const cities = [...new Set(allBookingsForFilters.map((b) => b.city))];
+  const services = [...new Set(allBookingsForFilters.map((b) => b.service))];
 
   return (
     <div className="min-h-screen bg-background flex">
