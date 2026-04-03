@@ -17,10 +17,10 @@ import {
 } from "@/components/ui/table";
 
 const sidebarItems = [
-  { icon: LayoutDashboard, label: "Dashboard", active: true },
-  { icon: BookOpen, label: "Bookings", active: false },
-  { icon: BarChart3, label: "Analytics", active: false, badge: "Soon" },
-  { icon: Settings, label: "Settings", active: false, badge: "Soon" },
+  { icon: LayoutDashboard, label: "Dashboard" },
+  { icon: BookOpen, label: "Bookings" },
+  { icon: BarChart3, label: "Analytics", badge: "Soon" },
+  { icon: Settings, label: "Settings", badge: "Soon" },
 ];
 
 const summaryCards = [
@@ -62,6 +62,7 @@ const statusStyles: Record<BookingStatus, string> = {
 
 const AdminDashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState("Dashboard");
   const [searchQuery, setSearchQuery] = useState("");
   const [cityFilter, setCityFilter] = useState("all");
   const [serviceFilter, setServiceFilter] = useState("all");
@@ -102,7 +103,8 @@ const AdminDashboard = () => {
           {sidebarItems.map((item) => (
             <button
               key={item.label}
-              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${item.active ? "bg-primary/10 text-primary" : "text-muted-foreground hover:bg-muted hover:text-foreground"}`}
+              onClick={() => !item.badge && setActiveTab(item.label)}
+              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${activeTab === item.label ? "bg-primary/10 text-primary" : "text-muted-foreground hover:bg-muted hover:text-foreground"} ${item.badge ? "opacity-60 cursor-not-allowed" : ""}`}
             >
               <item.icon className="w-5 h-5" />
               {item.label}
@@ -133,7 +135,8 @@ const AdminDashboard = () => {
               {sidebarItems.map((item) => (
                 <button
                   key={item.label}
-                  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${item.active ? "bg-primary/10 text-primary" : "text-muted-foreground hover:bg-muted"}`}
+                  onClick={() => { if (!item.badge) { setActiveTab(item.label); setSidebarOpen(false); } }}
+                  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${activeTab === item.label ? "bg-primary/10 text-primary" : "text-muted-foreground hover:bg-muted"} ${item.badge ? "opacity-60 cursor-not-allowed" : ""}`}
                 >
                   <item.icon className="w-5 h-5" />
                   {item.label}
@@ -161,6 +164,9 @@ const AdminDashboard = () => {
             <h1 className="text-lg font-display font-bold text-foreground">Dashboard</h1>
           </div>
           <div className="flex items-center gap-3">
+            <a href="/" className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1.5">
+              <LogOut className="w-4 h-4" /> Back to Website
+            </a>
             <Badge className="gradient-primary border-0 text-primary-foreground">Admin</Badge>
           </div>
         </header>
