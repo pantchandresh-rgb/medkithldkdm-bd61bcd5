@@ -11,8 +11,6 @@ const areas: Record<string, string[]> = {
   Kathgodam: ["Kathgodam Market", "Gaula Barrage", "Shish Mahal", "Ranibagh"],
 };
 
-const allAreas = Object.entries(areas).flatMap(([city, list]) => list.map(a => `${a}, ${city}`));
-
 const services = [
   { name: "Injection at Home", price: 299 },
   { name: "IV Drip Administration", price: 799 },
@@ -22,7 +20,11 @@ const services = [
   { name: "BP & Sugar Check", price: 199 },
   { name: "Blood Test at Home", price: 499 },
   { name: "Wound / Burn Dressing", price: 399 },
+  { name: "Doctor Consultation", price: 499 },
+  { name: "Ambulance Service", price: 999 },
 ];
+
+const allAreas = Object.entries(areas).flatMap(([city, list]) => list.map(a => `${a}, ${city}`));
 
 const WhyBookCalcSection = () => {
   const [calcService, setCalcService] = useState("");
@@ -53,7 +55,6 @@ const WhyBookCalcSection = () => {
 
   return (
     <section id="booking" className="relative py-24 overflow-hidden">
-      {/* Hero background */}
       <div className="absolute inset-0">
         <img src={heroImg} alt="" className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-background/90 backdrop-blur-sm" />
