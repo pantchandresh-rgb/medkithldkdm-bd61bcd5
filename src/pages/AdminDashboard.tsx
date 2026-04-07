@@ -3,9 +3,9 @@ import { getBookings, updateBookingStatus as updateStoredStatus, type BookingEnt
 import { motion } from "framer-motion";
 import {
   CalendarCheck, Clock, CheckCircle2, Activity,
-  Search, Download, Trash2, Eye, UserCheck, RefreshCw,
+  Search, Download, Trash2, Eye, RefreshCw,
   LayoutDashboard, BookOpen, BarChart3, Settings, LogOut,
-  Menu, X, Heart, FileText
+  Menu, X, Heart, FileText, Stethoscope, Ambulance, AlertTriangle
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -24,17 +24,11 @@ const sidebarItems = [
   { icon: Settings, label: "Settings", badge: "Soon" },
 ];
 
-const summaryCards = [
-  { label: "Total Bookings", value: 128, icon: CalendarCheck, color: "from-primary/10 to-primary/5", iconColor: "text-primary" },
-  { label: "Today's Bookings", value: 12, icon: Clock, color: "from-secondary/10 to-secondary/5", iconColor: "text-secondary" },
-  { label: "Active Requests", value: 7, icon: Activity, color: "from-amber-500/10 to-amber-500/5", iconColor: "text-amber-500" },
-  { label: "Completed", value: 109, icon: CheckCircle2, color: "from-emerald-500/10 to-emerald-500/5", iconColor: "text-emerald-500" },
-];
-
 type BookingStatus = "Pending" | "Assigned" | "Completed";
 
 interface Booking {
   id: number;
+  storageId?: string;
   name: string;
   phone: string;
   city: string;
@@ -44,6 +38,11 @@ interface Booking {
   technician: string;
   dateTime: string;
   status: BookingStatus;
+  serviceType?: string;
+  symptoms?: string;
+  emergencyType?: string;
+  isEmergency?: boolean;
+  paymentStatus?: string;
 }
 
 const mockBookings: Booking[] = [
@@ -69,7 +68,6 @@ const AdminDashboard = () => {
   const [serviceFilter, setServiceFilter] = useState("all");
   const [bookings, setBookings] = useState<Booking[]>([]);
 
-  // Load website bookings from localStorage + mock data
   useEffect(() => {
     const storedBookings = getBookings();
     const websiteBookings: Booking[] = storedBookings.map((b, i) => ({
@@ -84,6 +82,11 @@ const AdminDashboard = () => {
       technician: b.technician,
       dateTime: b.dateTime,
       status: b.status as BookingStatus,
+      serviceType: b.serviceType,
+      symptoms: b.symptoms,
+      emergencyType: b.emergencyType,
+      isEmergency: b.isEmergency,
+      paymentStatus: b.paymentStatus,
     }));
     setBookings([...websiteBookings, ...mockBookings]);
   }, []);
@@ -98,10 +101,7 @@ const AdminDashboard = () => {
   const markCompleted = (id: number) => {
     setBookings((prev) => prev.map((b) => {
       if (b.id === id) {
-        // Also update localStorage if it's a website booking
-        if ((b as any).storageId) {
-          updateStoredStatus((b as any).storageId, "Completed");
-        }
+        if (b.storageId) updateStoredStatus(b.storageId, "Completed");
         return { ...b, status: "Completed" as BookingStatus };
       }
       return b;
@@ -109,8 +109,8 @@ const AdminDashboard = () => {
   };
 
   const exportCSV = () => {
-    const headers = "Name,Phone,City,Area,Service,Address,Technician,Date,Status\n";
-    const rows = filtered.map((b) => `${b.name},${b.phone},${b.city},${b.area},${b.service},"${b.address}",${b.technician},${b.dateTime},${b.status}`).join("\n");
+    const headers = "Name,Phone,City,Area,Service,ServiceType,Address,Technician,Date,Status,Symptoms,EmergencyType,PaymentStatus\n";
+    const rows = filtered.map((b) => `${b.name},${b.phone},${b.city},${b.area},${b.service},${b.serviceType || "home"},"${b.address}",${b.technician},${b.dateTime},${b.status},"${b.symptoms || ""}",${b.emergencyType || ""},${b.paymentStatus || ""}`).join("\n");
     const blob = new Blob([headers + rows], { type: "text/csv" });
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
@@ -121,6 +121,18 @@ const AdminDashboard = () => {
   const allBookingsForFilters = [...mockBookings, ...bookings];
   const cities = [...new Set(allBookingsForFilters.map((b) => b.city))];
   const services = [...new Set(allBookingsForFilters.map((b) => b.service))];
+
+  const totalBookings = bookings.length;
+  const pendingBookings = bookings.filter(b => b.status === "Pending").length;
+  const completedBookings = bookings.filter(b => b.status === "Completed").length;
+  const emergencyBookings = bookings.filter(b => b.isEmergency).length;
+
+  const summaryCards = [
+    { label: "Total Bookings", value: totalBookings, icon: CalendarCheck, color: "from-primary/10 to-primary/5", iconColor: "text-primary" },
+    { label: "Pending", value: pendingBookings, icon: Clock, color: "from-amber-500/10 to-amber-500/5", iconColor: "text-amber-500" },
+    { label: "Completed", value: completedBookings, icon: CheckCircle2, color: "from-emerald-500/10 to-emerald-500/5", iconColor: "text-emerald-500" },
+    { label: "Emergencies", value: emergencyBookings, icon: AlertTriangle, color: "from-destructive/10 to-destructive/5", iconColor: "text-destructive" },
+  ];
 
   return (
     <div className="min-h-screen bg-background flex">
@@ -143,6 +155,17 @@ const AdminDashboard = () => {
               {item.badge && <Badge variant="outline" className="ml-auto text-[10px] px-1.5 py-0">{item.badge}</Badge>}
             </button>
           ))}
+          <div className="pt-4 border-t border-border mt-4 space-y-1">
+            <a href="/technician" className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">
+              <Activity className="w-4 h-4" /> Technician Panel
+            </a>
+            <a href="/doctor-dashboard" className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">
+              <Stethoscope className="w-4 h-4" /> Doctor Panel
+            </a>
+            <a href="/ambulance-dashboard" className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">
+              <Ambulance className="w-4 h-4" /> Ambulance Panel
+            </a>
+          </div>
         </nav>
         <div className="p-4 border-t border-border">
           <a href="/" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors">
@@ -187,7 +210,6 @@ const AdminDashboard = () => {
 
       {/* Main Content */}
       <div className="flex-1 lg:ml-64">
-        {/* Top Header */}
         <header className="sticky top-0 z-30 h-16 bg-card/80 backdrop-blur-lg border-b border-border flex items-center justify-between px-4 md:px-8">
           <div className="flex items-center gap-3">
             <button className="lg:hidden" onClick={() => setSidebarOpen(true)}>
@@ -223,11 +245,11 @@ const AdminDashboard = () => {
             ))}
           </div>
 
-          {/* Search, Filter & Actions */}
+          {/* Bookings Table */}
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} className="bg-card rounded-2xl border border-border p-4 md:p-6 shadow-card space-y-4">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
               <h2 className="text-lg font-display font-semibold text-foreground flex items-center gap-2">
-                <FileText className="w-5 h-5 text-primary" /> Bookings
+                <FileText className="w-5 h-5 text-primary" /> All Bookings
               </h2>
               <div className="flex items-center gap-2">
                 <Button size="sm" variant="outline" onClick={exportCSV} className="gap-1.5 rounded-lg">
@@ -242,12 +264,7 @@ const AdminDashboard = () => {
             <div className="flex flex-col sm:flex-row gap-3">
               <div className="relative flex-1">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                <Input
-                  placeholder="Search by name or phone"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-9 rounded-lg"
-                />
+                <Input placeholder="Search by name or phone" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="pl-9 rounded-lg" />
               </div>
               <Select value={cityFilter} onValueChange={setCityFilter}>
                 <SelectTrigger className="w-full sm:w-40 rounded-lg"><SelectValue placeholder="City" /></SelectTrigger>
@@ -265,38 +282,54 @@ const AdminDashboard = () => {
               </Select>
             </div>
 
-            {/* Table */}
             {filtered.length === 0 ? (
               <div className="py-16 text-center space-y-3">
                 <CalendarCheck className="w-12 h-12 mx-auto text-muted-foreground/40" />
                 <p className="text-muted-foreground font-medium">No bookings found</p>
-                <p className="text-sm text-muted-foreground">Try adjusting your search or filters.</p>
               </div>
             ) : (
               <div className="overflow-x-auto -mx-4 md:-mx-6">
-                <div className="min-w-[900px] px-4 md:px-6">
+                <div className="min-w-[1100px] px-4 md:px-6">
                   <Table>
                     <TableHeader>
                       <TableRow className="hover:bg-transparent">
                         <TableHead className="font-semibold">Name</TableHead>
                         <TableHead className="font-semibold">Phone</TableHead>
-                        <TableHead className="font-semibold">City</TableHead>
                         <TableHead className="font-semibold">Service</TableHead>
-                        <TableHead className="font-semibold">Technician</TableHead>
-                        <TableHead className="font-semibold">Date & Time</TableHead>
+                        <TableHead className="font-semibold">Type</TableHead>
+                        <TableHead className="font-semibold">City</TableHead>
+                        <TableHead className="font-semibold">Date</TableHead>
+                        <TableHead className="font-semibold">Payment</TableHead>
                         <TableHead className="font-semibold">Status</TableHead>
                         <TableHead className="font-semibold text-right">Actions</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
                       {filtered.map((b, i) => (
-                        <TableRow key={b.id} className={i % 2 === 0 ? "bg-muted/30" : ""}>
-                          <TableCell className="font-medium text-foreground">{b.name}</TableCell>
+                        <TableRow key={b.id} className={`${i % 2 === 0 ? "bg-muted/30" : ""} ${b.isEmergency ? "bg-destructive/5" : ""}`}>
+                          <TableCell className="font-medium text-foreground">
+                            <div>
+                              {b.name}
+                              {b.isEmergency && <Badge variant="destructive" className="ml-1 text-[10px] px-1">🚨</Badge>}
+                            </div>
+                            {b.symptoms && <p className="text-xs text-muted-foreground mt-0.5 max-w-[150px] truncate">{b.symptoms}</p>}
+                          </TableCell>
                           <TableCell className="text-muted-foreground">{b.phone}</TableCell>
-                          <TableCell className="text-muted-foreground">{b.city}</TableCell>
                           <TableCell className="text-foreground">{b.service}</TableCell>
-                          <TableCell className="text-muted-foreground">{b.technician}</TableCell>
+                          <TableCell>
+                            <Badge variant="outline" className="text-[10px]">
+                              {b.serviceType === "doctor" ? "🩺 Doctor" : b.serviceType === "ambulance" ? "🚑 Ambulance" : "🏠 Home"}
+                            </Badge>
+                          </TableCell>
+                          <TableCell className="text-muted-foreground">{b.city}</TableCell>
                           <TableCell className="text-muted-foreground whitespace-nowrap">{b.dateTime}</TableCell>
+                          <TableCell>
+                            {b.paymentStatus ? (
+                              <Badge variant={b.paymentStatus === "Paid" ? "default" : "destructive"} className="text-[10px]">
+                                {b.paymentStatus}
+                              </Badge>
+                            ) : <span className="text-xs text-muted-foreground">—</span>}
+                          </TableCell>
                           <TableCell>
                             <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold border ${statusStyles[b.status]}`}>
                               {b.status}

@@ -15,7 +15,7 @@ const Footer = () => (
         <div className="space-y-4">
           <h4 className="font-display font-bold text-primary-foreground">Quick Links</h4>
           <ul className="space-y-2 text-sm">
-            {["Home", "Services", "Book Now", "Partner With Us"].map(l => (
+            {["Home", "Services", "Doctors", "Book Now", "Partner With Us"].map(l => (
               <li key={l}><a href={`#${l.toLowerCase().replace(/\s+/g, "-")}`} className="hover:text-primary-foreground transition-colors">{l}</a></li>
             ))}
           </ul>
@@ -23,7 +23,7 @@ const Footer = () => (
         <div className="space-y-4">
           <h4 className="font-display font-bold text-primary-foreground">Services</h4>
           <ul className="space-y-2 text-sm">
-            {["Injection at Home", "IV Drip", "ECG Test", "Nurse Visit", "Physiotherapy", "Blood Test"].map(s => (
+            {["Injection at Home", "IV Drip", "ECG Test", "Nurse Visit", "Doctor Consultation", "Ambulance Service"].map(s => (
               <li key={s}>{s}</li>
             ))}
           </ul>
@@ -31,17 +31,26 @@ const Footer = () => (
         <div className="space-y-4">
           <h4 className="font-display font-bold text-primary-foreground">Contact</h4>
           <ul className="space-y-2 text-sm">
-            <li>📞 +91 99999 99999</li>
+            <li>📞 +91 9818185270</li>
             <li>📧 hello@medkit.in</li>
             <li>📍 Haldwani, Uttarakhand</li>
           </ul>
         </div>
       </div>
-      <div className="border-t border-primary-foreground/10 mt-12 pt-8 flex flex-col sm:flex-row items-center justify-between gap-2 text-sm">
-        <span>© {new Date().getFullYear()} MedKit. All rights reserved.</span>
-        <a href="/admin" className="text-primary-foreground/40 hover:text-primary-foreground/70 transition-colors text-xs">
-          Admin Panel
-        </a>
+      <div className="border-t border-primary-foreground/10 mt-12 pt-8">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-2 text-sm mb-3">
+          <span>© {new Date().getFullYear()} MedKit. All rights reserved.</span>
+          <a href="/admin" className="text-primary-foreground/40 hover:text-primary-foreground/70 transition-colors text-xs">
+            Admin Panel
+          </a>
+        </div>
+        <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-primary-foreground/30">
+          <a href="/technician" className="hover:text-primary-foreground/60 transition-colors">Technician Dashboard</a>
+          <span>•</span>
+          <a href="/doctor-dashboard" className="hover:text-primary-foreground/60 transition-colors">Doctor Dashboard</a>
+          <span>•</span>
+          <a href="/ambulance-dashboard" className="hover:text-primary-foreground/60 transition-colors">Ambulance Dashboard</a>
+        </div>
       </div>
     </div>
   </footer>
