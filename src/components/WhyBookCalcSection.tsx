@@ -86,8 +86,10 @@ const WhyBookCalcSection = () => {
               <span className="font-bold text-foreground">4.8 Rated</span>
               <span className="text-muted-foreground text-sm">| 100+ Happy Patients</span>
             </div>
-            <Button className="w-full rounded-xl gradient-primary text-primary-foreground h-12 font-semibold hover:scale-[1.02] transition-transform mt-4">
-              <Phone className="mr-2 w-4 h-4" /> Talk to Expert
+            <Button asChild className="w-full rounded-xl gradient-primary text-primary-foreground h-12 font-semibold hover:scale-[1.02] transition-transform mt-4">
+              <a href="tel:+919818185270">
+                <Phone className="mr-2 w-4 h-4" /> Talk to Expert
+              </a>
             </Button>
           </motion.div>
 
@@ -159,8 +161,10 @@ const WhyBookCalcSection = () => {
                 </li>
               ))}
             </ul>
-            <Button variant="outline" className="w-full rounded-xl h-12 font-semibold border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-colors mt-4">
-              Book Now
+            <Button asChild variant="outline" className="w-full rounded-xl h-12 font-semibold border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-colors mt-4">
+              <a href={`https://wa.me/919818185270?text=${encodeURIComponent(`Hi MedKit! I want to book ${calcService || "a service"} in ${calcArea || "my area"}.`)}`} target="_blank" rel="noopener noreferrer">
+                <MessageCircle className="mr-2 w-4 h-4" /> Book on WhatsApp
+              </a>
             </Button>
           </motion.div>
         </div>
