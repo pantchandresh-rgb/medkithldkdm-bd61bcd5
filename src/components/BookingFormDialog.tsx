@@ -282,13 +282,11 @@ const BookingFormDialog = ({ open, onOpenChange, serviceName, servicePrice }: Pr
             <Button type="submit" className="flex-1 gradient-primary text-primary-foreground rounded-full" disabled={submitting}>
               <CalendarCheck className="w-4 h-4 mr-2" /> Submit Booking
             </Button>
-            <Button type="button" variant="outline" className="flex-1 rounded-full" asChild>
-              <a
-                href={`https://wa.me/919818185270?text=${encodeURIComponent(buildWhatsAppMsg())}`}
-                target="_blank" rel="noopener noreferrer"
-              >
+            <Button type="button" variant="outline" className="flex-1 rounded-full" onClick={() => {
+                const msg = buildWhatsAppMsg();
+                window.open(`https://wa.me/919818185270?text=${encodeURIComponent(msg)}`, '_blank', 'noopener,noreferrer');
+              }}>
                 <MessageCircle className="w-4 h-4 mr-2" /> Book via WhatsApp
-              </a>
             </Button>
           </div>
         </form>
