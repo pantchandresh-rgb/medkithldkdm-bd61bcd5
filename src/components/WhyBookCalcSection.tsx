@@ -1,35 +1,21 @@
 import { motion } from "framer-motion";
-import { useState } from "react";
-import { Check, MessageCircle, Phone, Calculator, Shield, Clock, Star } from "lucide-react";
+import { useState, useMemo } from "react";
+import { Check, MessageCircle, Phone, Calculator, Shield, Clock, Star, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import homeHealthcare from "@/assets/home-healthcare.jpg";
 import heroImg from "@/assets/hero-doctor.jpg";
 import priceCalcImg from "@/assets/price-calculator.jpg";
+import { allServices, extendedAreas, calculatePrice, type UrgencyLevel, type PriceBreakdown } from "@/lib/pricing";
 
-const areas: Record<string, string[]> = {
-  Haldwani: ["Rampur Road", "Kaladhungi Road", "Nainital Road", "Mukhani", "Heera Nagar", "Kusumkhera", "Panchakki", "Bareilly Road", "Transport Nagar"],
-  Kathgodam: ["Kathgodam Market", "Gaula Barrage", "Shish Mahal", "Ranibagh"],
-};
-
-const services = [
-  { name: "Injection at Home", price: 299 },
-  { name: "IV Drip Administration", price: 799 },
-  { name: "ECG Test at Home", price: 999 },
-  { name: "Nurse Visit at Home", price: 499 },
-  { name: "Physiotherapy at Home", price: 699 },
-  { name: "BP & Sugar Check", price: 199 },
-  { name: "Blood Test at Home", price: 499 },
-  { name: "Wound / Burn Dressing", price: 399 },
-  { name: "Doctor Consultation", price: 499 },
-  { name: "Ambulance Service", price: 999 },
-];
-
-const allAreas = Object.entries(areas).flatMap(([city, list]) => list.map(a => `${a}, ${city}`));
+const allAreasList = Object.entries(extendedAreas).flatMap(([city, list]) => list.map(a => `${a}, ${city}`));
 
 const WhyBookCalcSection = () => {
-  const [calcService, setCalcService] = useState("");
+  const [calcServiceId, setCalcServiceId] = useState("");
   const [calcArea, setCalcArea] = useState("");
-  const [calcPrice, setCalcPrice] = useState<number | null>(null);
+  const [calcUrgency, setCalcUrgency] = useState<UrgencyLevel>("normal");
+  const [calcResult, setCalcResult] = useState<PriceBreakdown | null>(null);
+
   const [bookName, setBookName] = useState("");
   const [bookPhone, setBookPhone] = useState("");
   const [bookArea, setBookArea] = useState("");
@@ -39,18 +25,35 @@ const WhyBookCalcSection = () => {
   const [bookTime, setBookTime] = useState("");
   const [bookNotes, setBookNotes] = useState("");
 
+  const serviceGroups = useMemo(() => [
+    { label: "Home Services", services: allServices.filter(s => s.category === "home") },
+    { label: "Bite & Emergency", services: allServices.filter(s => s.category === "bite") },
+    { label: "Dressing & Injury", services: allServices.filter(s => s.category === "dressing") },
+    { label: "Doctor", services: allServices.filter(s => s.category === "doctor") },
+    { label: "Ambulance", services: allServices.filter(s => s.category === "ambulance") },
+  ], []);
+
   const getPrice = () => {
-    const s = services.find(sv => sv.name === calcService);
-    if (s) setCalcPrice(s.price);
+    const areaName = calcArea.split(",")[0].trim();
+    const result = calculatePrice(calcServiceId, areaName, calcUrgency);
+    setCalcResult(result);
   };
 
   const handleBook = () => {
     if (!bookName || !bookPhone || !bookArea) return;
-    const msg = `Hi MedKit! I'm ${bookName}. I'd like to book ${bookService || "a service"} in ${bookArea}. Address: ${bookAddress}. Date: ${bookDate}, Time: ${bookTime}. Notes: ${bookNotes}. Phone: ${bookPhone}`;
+    const svc = allServices.find(s => s.id === bookService);
+    const areaName = bookArea.split(",")[0].trim();
+    const pricing = svc ? calculatePrice(svc.id, areaName, "normal") : null;
+    let msg = `Hi MedKit! I'm ${bookName}. I'd like to book ${svc?.name || "a service"} in ${bookArea}. Address: ${bookAddress}. Date: ${bookDate}, Time: ${bookTime}.`;
+    if (pricing) {
+      msg += ` Estimated: ₹${pricing.totalPrice} (Base: ₹${pricing.basePrice}, Distance: ₹${pricing.distanceCost}, Platform: ₹${pricing.platformFee}).`;
+    }
+    if (bookNotes) msg += ` Notes: ${bookNotes}.`;
+    msg += ` Phone: ${bookPhone}`;
     window.open(`https://wa.me/919818185270?text=${encodeURIComponent(msg)}`, "_blank");
   };
 
-  const selectClasses = "w-full h-12 rounded-xl border border-border bg-card px-4 text-foreground focus:ring-2 focus:ring-primary/30 focus:border-primary outline-none transition";
+  const selectClasses = "w-full h-12 rounded-xl border border-border bg-card px-4 text-foreground focus:ring-2 focus:ring-primary/30 focus:border-primary outline-none transition text-sm";
   const inputClasses = selectClasses;
 
   return (
@@ -74,7 +77,7 @@ const WhyBookCalcSection = () => {
             <h3 className="text-2xl font-display font-bold text-foreground mb-6">Why Choose Us</h3>
             <img src={homeHealthcare} alt="Home healthcare" loading="lazy" width={800} height={600} className="rounded-xl w-full h-48 object-cover mb-6" />
             <ul className="space-y-3 flex-1">
-              {["Certified Healthcare Professionals", "Transparent Pricing", "Fast Service", "Home Comfort", "Trusted by Local Families", "Instant WhatsApp Booking"].map(item => (
+              {["Certified Healthcare Professionals", "Transparent Real-Time Pricing", "Fast Service — Same Day Available", "Home Comfort & Safety", "Trusted by Local Families", "Instant WhatsApp Booking"].map(item => (
                 <li key={item} className="flex items-center gap-3 text-foreground">
                   <Check className="w-5 h-5 text-secondary flex-shrink-0" />
                   <span className="text-sm">{item}</span>
@@ -105,7 +108,7 @@ const WhyBookCalcSection = () => {
               <input type="tel" placeholder="Phone Number" value={bookPhone} onChange={e => setBookPhone(e.target.value)} className={inputClasses} />
               <select value={bookArea} onChange={e => setBookArea(e.target.value)} className={selectClasses}>
                 <option value="">Select Area</option>
-                {Object.entries(areas).map(([city, list]) => (
+                {Object.entries(extendedAreas).map(([city, list]) => (
                   <optgroup key={city} label={city}>
                     {list.map(a => <option key={a} value={`${a}, ${city}`}>{a}</option>)}
                   </optgroup>
@@ -114,7 +117,11 @@ const WhyBookCalcSection = () => {
               <input type="text" placeholder="Enter Full Address" value={bookAddress} onChange={e => setBookAddress(e.target.value)} className={inputClasses} />
               <select value={bookService} onChange={e => setBookService(e.target.value)} className={selectClasses}>
                 <option value="">Select Service</option>
-                {services.map(s => <option key={s.name} value={s.name}>{s.name}</option>)}
+                {serviceGroups.map(g => (
+                  <optgroup key={g.label} label={g.label}>
+                    {g.services.map(s => <option key={s.id} value={s.id}>{s.name} — ₹{s.basePrice}</option>)}
+                  </optgroup>
+                ))}
               </select>
               <div className="grid grid-cols-2 gap-3">
                 <input type="date" value={bookDate} onChange={e => setBookDate(e.target.value)} className={inputClasses} />
@@ -129,40 +136,73 @@ const WhyBookCalcSection = () => {
 
           {/* Price Calculator */}
           <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="glass rounded-2xl p-8 shadow-card flex flex-col">
-            <h3 className="text-2xl font-display font-bold text-foreground flex items-center gap-2 mb-6">
+            <h3 className="text-2xl font-display font-bold text-foreground flex items-center gap-2 mb-2">
               <Calculator className="w-6 h-6 text-primary" /> Price Calculator
             </h3>
-            <img src={priceCalcImg} alt="Price calculator" loading="lazy" width={800} height={600} className="rounded-xl w-full h-48 object-cover mb-6" />
-            <div className="space-y-4">
-              <select value={calcService} onChange={e => { setCalcService(e.target.value); setCalcPrice(null); }} className={selectClasses}>
+            <p className="text-xs text-muted-foreground mb-6">Real-time transparent pricing — no hidden charges</p>
+            <img src={priceCalcImg} alt="Price calculator" loading="lazy" width={800} height={600} className="rounded-xl w-full h-36 object-cover mb-6" />
+            <div className="space-y-3">
+              <select value={calcServiceId} onChange={e => { setCalcServiceId(e.target.value); setCalcResult(null); }} className={selectClasses}>
                 <option value="">Select Service</option>
-                {services.map(s => <option key={s.name} value={s.name}>{s.name}</option>)}
+                {serviceGroups.map(g => (
+                  <optgroup key={g.label} label={g.label}>
+                    {g.services.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
+                  </optgroup>
+                ))}
               </select>
-              <select value={calcArea} onChange={e => setCalcArea(e.target.value)} className={selectClasses}>
+              <select value={calcArea} onChange={e => { setCalcArea(e.target.value); setCalcResult(null); }} className={selectClasses}>
                 <option value="">Select Area</option>
-                {allAreas.map(a => <option key={a} value={a}>{a}</option>)}
+                {allAreasList.map(a => <option key={a} value={a}>{a}</option>)}
+              </select>
+              <select value={calcUrgency} onChange={e => { setCalcUrgency(e.target.value as UrgencyLevel); setCalcResult(null); }} className={selectClasses}>
+                <option value="normal">Normal</option>
+                <option value="same_day">Same Day (+₹50)</option>
+                <option value="emergency">Emergency (+₹100)</option>
               </select>
               <Button onClick={getPrice} className="w-full rounded-xl gradient-primary text-primary-foreground h-12 font-semibold hover:scale-[1.02] transition-transform">
-                Get Price
+                Calculate Price
               </Button>
             </div>
 
-            {calcPrice !== null && (
-              <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="text-center p-6 rounded-xl bg-accent border border-primary/10 mt-6">
-                <p className="text-sm text-muted-foreground mb-1">Estimated Price</p>
-                <p className="text-4xl font-display font-bold text-primary">₹{calcPrice}</p>
+            {calcResult && (
+              <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="mt-6 space-y-3">
+                <div className="space-y-2 p-4 rounded-xl bg-accent/50 border border-border">
+                  <div className="flex justify-between text-sm text-muted-foreground">
+                    <span>Base Price</span><span className="text-foreground font-medium">₹{calcResult.basePrice}</span>
+                  </div>
+                  <div className="flex justify-between text-sm text-muted-foreground">
+                    <span>Distance ({calcResult.distanceKm} km)</span><span className="text-foreground font-medium">₹{calcResult.distanceCost}</span>
+                  </div>
+                  {calcResult.urgencyCharge > 0 && (
+                    <div className="flex justify-between text-sm text-muted-foreground">
+                      <span>Urgency Charge</span><span className="text-destructive font-medium">₹{calcResult.urgencyCharge}</span>
+                    </div>
+                  )}
+                  <div className="flex justify-between text-sm text-muted-foreground">
+                    <span>Platform Fee</span><span className="text-foreground font-medium">₹{calcResult.platformFee}</span>
+                  </div>
+                  <div className="border-t border-border pt-2 flex justify-between font-bold text-foreground">
+                    <span>Total</span><span className="text-primary text-xl">₹{calcResult.totalPrice}</span>
+                  </div>
+                </div>
+                <Badge variant="secondary" className="w-full justify-center py-1.5 text-xs gap-1">
+                  <Shield className="w-3 h-3" /> Transparent pricing — pay after service
+                </Badge>
               </motion.div>
             )}
 
-            <ul className="space-y-2 mt-6 flex-1">
-              {[{ icon: Shield, text: "No hidden charges" }, { icon: Clock, text: "Pay after service" }, { icon: Check, text: "Quick response team" }].map(({ icon: Icon, text }) => (
-                <li key={text} className="flex items-center gap-3 text-foreground text-sm">
-                  <Icon className="w-4 h-4 text-secondary" /> {text}
-                </li>
-              ))}
-            </ul>
+            {!calcResult && (
+              <ul className="space-y-2 mt-6 flex-1">
+                {[{ icon: Shield, text: "No hidden charges" }, { icon: Clock, text: "Pay after service" }, { icon: Check, text: "Quick response team" }].map(({ icon: Icon, text }) => (
+                  <li key={text} className="flex items-center gap-3 text-foreground text-sm">
+                    <Icon className="w-4 h-4 text-secondary" /> {text}
+                  </li>
+                ))}
+              </ul>
+            )}
+
             <Button asChild variant="outline" className="w-full rounded-xl h-12 font-semibold border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-colors mt-4">
-              <a href={`https://wa.me/919818185270?text=${encodeURIComponent(`Hi MedKit! I want to book ${calcService || "a service"} in ${calcArea || "my area"}.`)}`} target="_blank" rel="noopener noreferrer">
+              <a href={`https://wa.me/919818185270?text=${encodeURIComponent(`Hi MedKit! I want to check pricing for a service.`)}`} target="_blank" rel="noopener noreferrer">
                 <MessageCircle className="mr-2 w-4 h-4" /> Book on WhatsApp
               </a>
             </Button>

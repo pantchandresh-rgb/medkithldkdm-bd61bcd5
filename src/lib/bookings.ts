@@ -11,7 +11,6 @@ export interface BookingEntry {
   status: "Pending" | "Assigned" | "Completed";
   technician: string;
   createdAt: string;
-  // Extended fields
   serviceType?: "home" | "doctor" | "ambulance";
   symptoms?: string;
   callType?: "Audio" | "Video";
@@ -56,23 +55,30 @@ export function updateBookingStatus(id: string, status: BookingEntry["status"]):
   }
 }
 
-// AI-like keyword service suggestion
+// AI-like keyword service suggestion (extended with bite/dressing)
 const serviceKeywords: Record<string, string[]> = {
-  "Doctor Consultation": ["fever", "cold", "cough", "headache", "sick", "diagnosis", "consult", "doctor", "medicine", "prescription", "throat", "stomach", "nausea", "vomit"],
+  "Doctor Consultation": ["fever", "cold", "cough", "headache", "sick", "diagnosis", "consult", "doctor", "medicine", "prescription", "throat", "stomach", "nausea", "vomit", "pain", "infection"],
   "Ambulance Service": ["accident", "emergency", "urgent", "bleeding", "unconscious", "heart attack", "stroke", "critical", "ambulance", "fracture", "collapse"],
   "Injection at Home": ["injection", "shot", "vaccine", "insulin"],
   "IV Drip Administration": ["drip", "iv", "saline", "hydration", "infusion"],
   "ECG Test at Home": ["ecg", "heart", "chest pain", "cardiac"],
-  "Nurse Visit at Home": ["nurse", "post surgery", "wound", "dressing", "elderly care"],
-  "Physiotherapy at Home": ["physio", "therapy", "pain", "joint", "back pain", "exercise", "mobility"],
+  "Nurse Visit at Home": ["nurse", "post surgery", "wound care", "elderly care"],
+  "Physiotherapy at Home": ["physio", "therapy", "joint", "back pain", "exercise", "mobility", "sprain"],
   "BP & Sugar Check": ["bp", "blood pressure", "sugar", "diabetes", "glucose"],
   "Blood Test at Home": ["blood test", "lab", "cbc", "thyroid", "report"],
-  "Wound / Burn Dressing": ["wound", "burn", "cut", "dressing", "bandage"],
+  "Dog Bite Injection": ["dog bite", "dog", "rabies"],
+  "Monkey Bite Injection": ["monkey bite", "monkey"],
+  "Snake Bite (Emergency)": ["snake bite", "snake", "venom", "anti-venom"],
+  "Minor Dressing": ["minor wound", "small cut", "scratch"],
+  "Major Dressing": ["major wound", "deep cut", "surgical wound", "stitches"],
+  "Burn Dressing": ["burn", "scald", "fire", "hot water"],
+  "Plaster Application": ["plaster", "cast", "fracture", "broken bone"],
+  "Plaster Removal": ["plaster removal", "cast removal", "remove plaster"],
 };
 
 export function suggestService(input: string): { service: string; isEmergency: boolean } | null {
   const lower = input.toLowerCase();
-  const emergencyWords = ["accident", "emergency", "urgent", "bleeding", "unconscious", "heart attack", "stroke", "critical", "collapse"];
+  const emergencyWords = ["accident", "emergency", "urgent", "bleeding", "unconscious", "heart attack", "stroke", "critical", "collapse", "snake bite", "snake"];
   const isEmergency = emergencyWords.some(w => lower.includes(w));
 
   let bestMatch: string | null = null;
