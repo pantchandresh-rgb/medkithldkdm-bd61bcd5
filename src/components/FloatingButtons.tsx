@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Phone, MessageCircle } from "lucide-react";
+import { createWhatsAppUrl } from "@/lib/whatsapp";
 
 const PHONE = "9818185270";
 const WHATSAPP = "919818185270";
@@ -16,7 +17,7 @@ const FloatingButtons = () => (
       <Phone className="w-6 h-6" />
     </motion.a>
     <motion.a
-      href={`https://wa.me/${WHATSAPP}?text=${encodeURIComponent("Hi MedKit! I need help with a healthcare service.")}`}
+      href={createWhatsAppUrl({ phone: WHATSAPP, message: "Hi MedKit! I need help with a healthcare service." })}
       target="_blank"
       rel="noopener noreferrer"
       whileHover={{ scale: 1.15 }}

@@ -2,8 +2,7 @@ import { motion } from "framer-motion";
 import { Heart, Ambulance, UserCheck, Stethoscope, MessageCircle, ArrowRight, Users, HandHeart, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import partnerImg from "@/assets/partner-community.jpg";
-
-const WHATSAPP = "919818185270";
+import { openWhatsApp } from "@/lib/whatsapp";
 
 const roles = [
   {
@@ -91,7 +90,7 @@ const EmotionalBanners = () => (
             <p className="text-sm text-muted-foreground mb-6 flex-1">{r.desc}</p>
             <Button
               className="rounded-full w-full font-semibold gradient-primary text-primary-foreground hover:scale-[1.02] transition-transform"
-              onClick={() => window.open(`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(r.msg)}`, '_blank', 'noopener,noreferrer')}
+              onClick={() => openWhatsApp({ message: r.msg })}
             >
               <MessageCircle className="w-4 h-4 mr-2" /> Join as Partner
             </Button>

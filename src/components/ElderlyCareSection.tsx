@@ -3,6 +3,7 @@ import { Heart, Shield, Clock, Phone, Star, CheckCircle, UserCheck, Activity, St
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import elderlyCareImg from "@/assets/elderly-care.jpg";
+import { createWhatsAppUrl } from "@/lib/whatsapp";
 
 const plans = [
   {
@@ -130,7 +131,7 @@ const ElderlyCareSection = () => (
               variant={plan.popular ? "default" : "outline"}
             >
               <a
-                href={`https://wa.me/919818185270?text=${encodeURIComponent(`Hi MedKit! I'm interested in the ${plan.name} plan (₹${plan.price}/month). Please share details.`)}`}
+                href={createWhatsAppUrl({ message: `Hi MedKit! I'm interested in the ${plan.name} plan (₹${plan.price}/month). Please share details.` })}
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -153,7 +154,7 @@ const ElderlyCareSection = () => (
           size="lg"
           className="rounded-full gradient-primary text-primary-foreground px-10 h-14 text-lg font-semibold shadow-elevated hover:scale-105 transition-transform"
         >
-          <a href="https://wa.me/919818185270?text=Hi%20MedKit!%20I%20want%20to%20know%20about%20Elderly%20Care%20Plans." target="_blank" rel="noopener noreferrer">
+          <a href={createWhatsAppUrl({ message: "Hi MedKit! I want to know about Elderly Care Plans." })} target="_blank" rel="noopener noreferrer">
             💬 Talk to Expert &amp; Get Plan
           </a>
         </Button>
