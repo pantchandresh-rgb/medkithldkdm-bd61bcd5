@@ -7,6 +7,7 @@ import homeHealthcare from "@/assets/home-healthcare.jpg";
 import heroImg from "@/assets/hero-doctor.jpg";
 import priceCalcImg from "@/assets/price-calculator.jpg";
 import { allServices, extendedAreas, calculatePrice, type UrgencyLevel, type PriceBreakdown } from "@/lib/pricing";
+import { createWhatsAppUrl, openWhatsApp } from "@/lib/whatsapp";
 
 const allAreasList = Object.entries(extendedAreas).flatMap(([city, list]) => list.map(a => `${a}, ${city}`));
 
@@ -50,7 +51,7 @@ const WhyBookCalcSection = () => {
     }
     if (bookNotes) msg += ` Notes: ${bookNotes}.`;
     msg += ` Phone: ${bookPhone}`;
-    window.open(`https://wa.me/919818185270?text=${encodeURIComponent(msg)}`, "_blank");
+    openWhatsApp({ message: msg });
   };
 
   const selectClasses = "w-full h-12 rounded-xl border border-border bg-card px-4 text-foreground focus:ring-2 focus:ring-primary/30 focus:border-primary outline-none transition text-sm";
@@ -202,7 +203,7 @@ const WhyBookCalcSection = () => {
             )}
 
             <Button asChild variant="outline" className="w-full rounded-xl h-12 font-semibold border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-colors mt-4">
-              <a href={`https://wa.me/919818185270?text=${encodeURIComponent(`Hi MedKit! I want to check pricing for a service.`)}`} target="_blank" rel="noopener noreferrer">
+              <a href={createWhatsAppUrl({ message: "Hi MedKit! I want to check pricing for a service." })} target="_blank" rel="noopener noreferrer">
                 <MessageCircle className="mr-2 w-4 h-4" /> Book on WhatsApp
               </a>
             </Button>

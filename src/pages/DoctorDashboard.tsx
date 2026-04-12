@@ -3,6 +3,7 @@ import { getBookings, updateBookingStatus, type BookingEntry } from "@/lib/booki
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Phone, MessageCircle, CheckCircle2, ArrowLeft, Stethoscope } from "lucide-react";
+import { createWhatsAppUrl } from "@/lib/whatsapp";
 
 const DoctorDashboard = () => {
   const [bookings, setBookings] = useState<BookingEntry[]>([]);
@@ -52,7 +53,7 @@ const DoctorDashboard = () => {
                 <a href={`tel:${b.phone}`}><Phone className="w-3 h-3" /> Call Patient</a>
               </Button>
               <Button size="sm" variant="outline" className="gap-1.5 rounded-lg" asChild>
-                <a href={`https://wa.me/91${b.phone}`} target="_blank" rel="noopener noreferrer"><MessageCircle className="w-3 h-3" /> WhatsApp</a>
+                <a href={createWhatsAppUrl({ phone: b.phone })} target="_blank" rel="noopener noreferrer"><MessageCircle className="w-3 h-3" /> WhatsApp</a>
               </Button>
               {b.status !== "Completed" && (
                 <Button size="sm" className="gap-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-primary-foreground" onClick={() => markCompleted(b.id)}>

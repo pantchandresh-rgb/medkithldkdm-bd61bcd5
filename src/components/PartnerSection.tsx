@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Check, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import partnerImg from "@/assets/partner-team.jpg";
+import { createWhatsAppUrl } from "@/lib/whatsapp";
 
 const PartnerSection = () => (
   <section id="partner" className="py-24 bg-background">
@@ -26,7 +27,7 @@ const PartnerSection = () => (
             ))}
           </ul>
           <Button asChild size="lg" className="rounded-full gradient-primary text-primary-foreground px-8 h-14 text-base font-semibold shadow-elevated hover:scale-105 transition-transform">
-            <a href="https://wa.me/919818185270?text=Hi%20MedKit!%20I%20want%20to%20become%20a%20partner." target="_blank" rel="noopener noreferrer">
+            <a href={createWhatsAppUrl({ message: "Hi MedKit! I want to become a partner." })} target="_blank" rel="noopener noreferrer">
               Become a Partner <ArrowRight className="ml-2 w-5 h-5" />
             </a>
           </Button>

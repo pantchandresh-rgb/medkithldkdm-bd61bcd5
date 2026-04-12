@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import heroImg from "@/assets/hero-doctor.jpg";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, MessageCircle, ShieldCheck, Clock, MapPin, CheckCircle } from "lucide-react";
+import { createWhatsAppUrl } from "@/lib/whatsapp";
 
 const WHATSAPP = "919818185270";
 
@@ -50,7 +51,7 @@ const HeroSection = () => {
             </Button>
             <Button asChild size="lg" variant="outline" className="rounded-full px-8 h-14 text-base font-semibold border-secondary bg-secondary/10 text-primary-foreground hover:bg-secondary/20 hover:text-primary-foreground">
               <a
-                href={`https://wa.me/${WHATSAPP}?text=${encodeURIComponent("Hi MedKit! I want to book a healthcare service.")}`}
+                href={createWhatsAppUrl({ phone: WHATSAPP, message: "Hi MedKit! I want to book a healthcare service." })}
                 target="_blank"
                 rel="noopener noreferrer"
               >

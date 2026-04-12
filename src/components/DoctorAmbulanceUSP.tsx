@@ -3,6 +3,7 @@ import { Stethoscope, Ambulance, Phone, Video, MapPin, Clock, Shield, CheckCircl
 import { Button } from "@/components/ui/button";
 import doctorImg from "@/assets/doctor-consultation-usp.jpg";
 import ambulanceImg from "@/assets/ambulance-usp.jpg";
+import { createWhatsAppUrl } from "@/lib/whatsapp";
 
 const WHATSAPP = "919818185270";
 
@@ -44,7 +45,7 @@ const DoctorAmbulanceUSP = () => (
           </ul>
           <div className="flex flex-wrap gap-3 pt-2">
             <Button asChild size="lg" className="rounded-full gradient-primary text-primary-foreground px-8 font-semibold hover:scale-105 transition-transform">
-              <a href={`https://wa.me/${WHATSAPP}?text=${encodeURIComponent("Hi MedKit! I want to book a Doctor Consultation.")}`} target="_blank" rel="noopener noreferrer">
+              <a href={createWhatsAppUrl({ phone: WHATSAPP, message: "Hi MedKit! I want to book a Doctor Consultation." })} target="_blank" rel="noopener noreferrer">
                 <MessageCircle className="w-4 h-4 mr-2" /> Book Doctor on WhatsApp
               </a>
             </Button>
@@ -123,7 +124,7 @@ const DoctorAmbulanceUSP = () => (
               </a>
             </Button>
             <Button asChild variant="outline" size="lg" className="rounded-full px-8 font-semibold border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground">
-              <a href={`https://wa.me/${WHATSAPP}?text=${encodeURIComponent("🚑 EMERGENCY! I need an ambulance immediately. Please send one ASAP!")}`} target="_blank" rel="noopener noreferrer">
+              <a href={createWhatsAppUrl({ phone: WHATSAPP, message: "🚑 EMERGENCY! I need an ambulance immediately. Please send one ASAP!" })} target="_blank" rel="noopener noreferrer">
                 <MessageCircle className="w-4 h-4 mr-2" /> WhatsApp SOS
               </a>
             </Button>

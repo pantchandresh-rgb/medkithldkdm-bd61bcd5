@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge";
 import { addBooking, suggestService } from "@/lib/bookings";
 import { calculatePrice, extendedAreas, type UrgencyLevel, type PriceBreakdown } from "@/lib/pricing";
+import { openWhatsApp } from "@/lib/whatsapp";
 import { toast } from "@/hooks/use-toast";
 import { CalendarCheck, MessageCircle, Sparkles, AlertTriangle, CreditCard, CheckCircle2, TrendingUp } from "lucide-react";
 
@@ -331,8 +332,7 @@ const BookingFormDialog = ({ open, onOpenChange, serviceName, servicePrice }: Pr
               <CalendarCheck className="w-4 h-4 mr-2" /> Submit Booking
             </Button>
             <Button type="button" variant="outline" className="flex-1 rounded-full" onClick={() => {
-              const msg = buildWhatsAppMsg();
-              window.open(`https://wa.me/919818185270?text=${encodeURIComponent(msg)}`, '_blank', 'noopener,noreferrer');
+              openWhatsApp({ message: buildWhatsAppMsg() });
             }}>
               <MessageCircle className="w-4 h-4 mr-2" /> Book via WhatsApp
             </Button>
