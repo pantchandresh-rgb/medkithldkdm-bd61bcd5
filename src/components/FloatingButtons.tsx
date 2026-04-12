@@ -5,7 +5,7 @@ const PHONE = "9818185270";
 const WHATSAPP = "919818185270";
 
 const FloatingButtons = () => (
-  <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-4">
+  <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-3">
     <motion.a
       href={`tel:+91${PHONE}`}
       whileHover={{ scale: 1.15 }}

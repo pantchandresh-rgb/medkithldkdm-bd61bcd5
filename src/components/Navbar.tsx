@@ -15,7 +15,7 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 glass">
+    <nav className="fixed top-0 left-0 right-0 z-50 glass border-b border-border/30">
       <div className="container flex items-center justify-between h-16">
         <a href="#" className="flex items-center gap-2 font-display font-bold text-xl text-foreground">
           <Heart className="w-6 h-6 text-primary" /> MedKit
@@ -24,8 +24,8 @@ const Navbar = () => {
           {links.map(l => (
             <a key={l.label} href={l.href} className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">{l.label}</a>
           ))}
-          <Button size="sm" className="rounded-full gradient-primary text-primary-foreground font-semibold px-6">
-            Book Now
+          <Button asChild size="sm" className="rounded-full gradient-primary text-primary-foreground font-semibold px-6">
+            <a href="#booking">Book Now</a>
           </Button>
         </div>
         <button onClick={() => setOpen(!open)} className="md:hidden text-foreground">
@@ -39,7 +39,9 @@ const Navbar = () => {
               {links.map(l => (
                 <a key={l.label} href={l.href} onClick={() => setOpen(false)} className="block py-2 text-sm font-medium text-foreground">{l.label}</a>
               ))}
-              <Button className="w-full rounded-full gradient-primary text-primary-foreground font-semibold">Book Now</Button>
+              <Button asChild className="w-full rounded-full gradient-primary text-primary-foreground font-semibold">
+                <a href="#booking" onClick={() => setOpen(false)}>Book Now</a>
+              </Button>
             </div>
           </motion.div>
         )}

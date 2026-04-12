@@ -7,7 +7,7 @@ import ambulanceImg from "@/assets/ambulance-usp.jpg";
 const WHATSAPP = "919818185270";
 
 const DoctorAmbulanceUSP = () => (
-  <section className="py-24 bg-background">
+  <section className="py-28 bg-background">
     <div className="container space-y-20">
       {/* Doctor Consultation USP */}
       <motion.div

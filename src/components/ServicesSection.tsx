@@ -47,35 +47,52 @@ const ServiceCard = ({ icon: Icon, title, desc, price, index, emergency, onBook 
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
     transition={{ delay: index * 0.05 }}
-    whileHover={{ y: -8, scale: 1.02 }}
-    className={`group glass rounded-2xl p-6 shadow-card hover:shadow-elevated transition-shadow duration-300 flex flex-col ${
-      emergency ? "border border-destructive/30 bg-destructive/5" : ""
+    whileHover={{ y: -6 }}
+    className={`group bg-card rounded-2xl p-6 border border-border/60 shadow-sm hover:shadow-elevated transition-all duration-300 flex flex-col ${
+      emergency ? "border-destructive/30 bg-destructive/5" : ""
     }`}
   >
-    <div className={`w-14 h-14 rounded-xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform ${
-      emergency ? "bg-destructive/20" : "gradient-primary"
+    <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform ${
+      emergency ? "bg-destructive/15" : "gradient-primary"
     }`}>
-      <Icon className={`w-7 h-7 ${emergency ? "text-destructive" : "text-primary-foreground"}`} />
+      <Icon className={`w-6 h-6 ${emergency ? "text-destructive" : "text-primary-foreground"}`} />
     </div>
-    <h3 className="text-lg font-display font-bold text-foreground mb-2">{title}</h3>
-    <p className="text-sm text-muted-foreground mb-4 flex-1">{desc}</p>
-    <div className="flex items-center justify-between mt-auto">
+    <h3 className="text-base font-display font-bold text-foreground mb-1.5">{title}</h3>
+    <p className="text-sm text-muted-foreground mb-5 flex-1 leading-relaxed">{desc}</p>
+    <div className="flex items-center justify-between mt-auto pt-4 border-t border-border/50">
       <div>
-        <span className="text-2xl font-bold text-primary">₹{price}</span>
+        <span className="text-xl font-bold text-primary">₹{price}</span>
         <span className="text-xs text-muted-foreground ml-1">onwards</span>
       </div>
       <Button
         size="sm"
-        className={`rounded-full hover:scale-105 transition-transform ${
+        className={`rounded-full text-xs px-5 hover:scale-105 transition-transform ${
           emergency
             ? "bg-destructive text-destructive-foreground hover:bg-destructive/90"
             : "gradient-primary text-primary-foreground"
         }`}
         onClick={onBook}
       >
-        {emergency ? "Get Immediate Help" : "Book Now"}
+        {emergency ? "Get Help" : "Book Now"}
       </Button>
     </div>
+  </motion.div>
+);
+
+const SectionHeader = ({ tag, tagColor, title, highlight, highlightClass, desc }: {
+  tag: string; tagColor: string; title: string; highlight: string; highlightClass: string; desc: string;
+}) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    className="text-center mb-14 space-y-3"
+  >
+    <span className={`text-xs font-semibold tracking-widest uppercase ${tagColor}`}>{tag}</span>
+    <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground">
+      {title} <span className={highlightClass}>{highlight}</span>
+    </h2>
+    <p className="text-muted-foreground max-w-2xl mx-auto">{desc}</p>
   </motion.div>
 );
 
@@ -103,62 +120,44 @@ const ServicesSection = () => {
   );
 
   return (
-    <section id="services" className="py-24 bg-background">
-      <div className="container space-y-20">
+    <section id="services" className="py-28 bg-background">
+      <div className="container space-y-24">
         {/* Home Services */}
         <div>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16 space-y-4"
-          >
-            <span className="text-sm font-semibold tracking-widest uppercase text-primary">Our Services</span>
-            <h2 className="text-4xl md:text-5xl font-display font-bold text-foreground">
-              Healthcare Services at Your <span className="text-gradient">Doorstep</span>
-            </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
-              Certified professionals delivering quality healthcare in the comfort of your home.
-            </p>
-          </motion.div>
+          <SectionHeader
+            tag="Our Services"
+            tagColor="text-primary"
+            title="Healthcare Services at Your"
+            highlight="Doorstep"
+            highlightClass="text-gradient"
+            desc="Certified professionals delivering quality healthcare in the comfort of your home."
+          />
           {renderGrid(homeServices)}
         </div>
 
         {/* Bite & Emergency */}
         <div>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-12 space-y-4"
-          >
-            <span className="text-sm font-semibold tracking-widest uppercase text-destructive">Emergency Care</span>
-            <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground">
-              🐍 Bite & Emergency <span className="text-destructive">Injection Care</span>
-            </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Immediate professional response for animal bite emergencies. Don't wait — get help now.
-            </p>
-          </motion.div>
+          <SectionHeader
+            tag="Emergency Care"
+            tagColor="text-destructive"
+            title="🐍 Bite & Emergency"
+            highlight="Injection Care"
+            highlightClass="text-destructive"
+            desc="Immediate professional response for animal bite emergencies. Don't wait — get help now."
+          />
           {renderGrid(biteServices, "lg:grid-cols-3")}
         </div>
 
         {/* Dressing & Injury */}
         <div>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-12 space-y-4"
-          >
-            <span className="text-sm font-semibold tracking-widest uppercase text-primary">Wound Care</span>
-            <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground">
-              🩹 Dressing & Injury <span className="text-gradient">Management</span>
-            </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Professional wound care, burn treatment, and plaster services at your doorstep.
-            </p>
-          </motion.div>
+          <SectionHeader
+            tag="Wound Care"
+            tagColor="text-primary"
+            title="🩹 Dressing & Injury"
+            highlight="Management"
+            highlightClass="text-gradient"
+            desc="Professional wound care, burn treatment, and plaster services at your doorstep."
+          />
           {renderGrid(dressingServices, "lg:grid-cols-3")}
         </div>
       </div>
