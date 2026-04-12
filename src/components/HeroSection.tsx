@@ -1,19 +1,27 @@
 import { motion } from "framer-motion";
 import heroImg from "@/assets/hero-doctor.jpg";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Play } from "lucide-react";
+import { ArrowRight, MessageCircle, ShieldCheck, Clock, MapPin, CheckCircle } from "lucide-react";
+
+const WHATSAPP = "919818185270";
+
+const trustItems = [
+  { icon: ShieldCheck, text: "Verified Professionals" },
+  { icon: Clock, text: "Fast Response" },
+  { icon: MapPin, text: "Serving Haldwani & Kathgodam" },
+];
 
 const HeroSection = () => {
   return (
-    <section className="relative min-h-[90vh] flex items-center overflow-hidden gradient-hero">
-      {/* Animated background shapes */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full bg-primary/10 blur-3xl" />
-        <div className="absolute -bottom-40 -left-40 w-[500px] h-[500px] rounded-full bg-secondary/10 blur-3xl" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full bg-primary/5 blur-3xl animate-pulse" />
+    <section className="relative min-h-[92vh] flex items-center overflow-hidden gradient-hero">
+      {/* Ambient background */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full bg-primary/8 blur-3xl" />
+        <div className="absolute -bottom-40 -left-40 w-[500px] h-[500px] rounded-full bg-secondary/8 blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full bg-primary/4 blur-3xl animate-pulse" />
       </div>
 
-      <div className="container relative z-10 grid lg:grid-cols-2 gap-12 items-center py-20">
+      <div className="container relative z-10 grid lg:grid-cols-2 gap-16 items-center py-24 lg:py-28">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -25,43 +33,43 @@ const HeroSection = () => {
             Trusted by 100+ families in Haldwani
           </div>
 
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-display font-extrabold leading-[1.1] text-primary-foreground">
-            Healthcare at Home,{" "}
-            <span className="text-gradient">Simplified</span>
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-extrabold leading-[1.08] text-primary-foreground tracking-tight">
+            Book Trusted Healthcare{" "}
+            <span className="text-gradient">Services at Home</span>
           </h1>
 
           <p className="text-lg md:text-xl text-primary-foreground/70 max-w-lg leading-relaxed">
-            Book trusted healthcare services instantly — from injections to diagnostics, delivered at your doorstep by certified professionals.
+            From diagnostics to home care — fast, reliable, and verified professionals at your doorstep.
           </p>
 
           <div className="flex flex-wrap gap-4">
             <Button asChild size="lg" className="gradient-primary text-primary-foreground rounded-full px-8 h-14 text-base font-semibold shadow-elevated hover:scale-105 transition-transform">
-              <a href="https://wa.me/919818185270?text=Hi%20MedKit!%20I%20want%20to%20book%20a%20service." target="_blank" rel="noopener noreferrer">
-                Book Now <ArrowRight className="ml-2 w-5 h-5" />
+              <a href="#booking">
+                Book a Service <ArrowRight className="ml-2 w-5 h-5" />
               </a>
             </Button>
             <Button asChild size="lg" variant="outline" className="rounded-full px-8 h-14 text-base font-semibold border-secondary bg-secondary/10 text-primary-foreground hover:bg-secondary/20 hover:text-primary-foreground">
-              <a href="#services">
-                <Play className="mr-2 w-5 h-5" /> Explore Services
+              <a
+                href={`https://wa.me/${WHATSAPP}?text=${encodeURIComponent("Hi MedKit! I want to book a healthcare service.")}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <MessageCircle className="mr-2 w-5 h-5" /> Chat on WhatsApp
               </a>
             </Button>
           </div>
 
-          <div className="flex items-center gap-6 pt-4">
-            <div className="flex -space-x-3">
-              {[1, 2, 3, 4].map((i) => (
-                <div key={i} className="w-10 h-10 rounded-full gradient-primary border-2 border-background flex items-center justify-center text-xs font-bold text-primary-foreground">
-                  {String.fromCharCode(64 + i)}
-                </div>
-              ))}
-            </div>
-            <div>
-              <div className="flex items-center gap-1 text-amber-400">
-                {"★★★★★".split("").map((s, i) => <span key={i}>{s}</span>)}
+          {/* Trust line */}
+          <div className="flex flex-wrap items-center gap-5 pt-2">
+            {trustItems.map(({ icon: Icon, text }) => (
+              <div key={text} className="flex items-center gap-2 text-primary-foreground/70 text-sm">
+                <Icon className="w-4 h-4 text-secondary" />
+                <span>{text}</span>
               </div>
-              <p className="text-sm text-primary-foreground/60">4.8 Rating • 100+ Happy Patients</p>
-            </div>
+            ))}
           </div>
+
+          <p className="text-xs text-primary-foreground/50">Get instant response on WhatsApp — no waiting</p>
         </motion.div>
 
         <motion.div
@@ -74,7 +82,6 @@ const HeroSection = () => {
             <img src={heroImg} alt="Professional healthcare at home" width={1280} height={960} className="w-full h-auto object-cover rounded-3xl" />
             <div className="absolute inset-0 bg-gradient-to-t from-foreground/20 to-transparent" />
           </div>
-          {/* Floating stat cards */}
           <motion.div
             animate={{ y: [0, -10, 0] }}
             transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
