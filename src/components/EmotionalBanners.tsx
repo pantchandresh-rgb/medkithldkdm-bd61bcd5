@@ -36,7 +36,7 @@ const highlights = [
 ];
 
 const EmotionalBanners = () => (
-  <section id="partner" className="py-24 bg-muted/30">
+  <section id="partner" className="py-28 bg-muted/30">
     <div className="container">
       <div className="grid lg:grid-cols-2 gap-16 items-center mb-16">
         <motion.div
