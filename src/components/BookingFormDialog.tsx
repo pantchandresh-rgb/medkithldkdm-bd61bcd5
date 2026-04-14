@@ -11,6 +11,7 @@ import { calculatePrice, extendedAreas, type UrgencyLevel, type PriceBreakdown }
 import { openWhatsApp } from "@/lib/whatsapp";
 import { toast } from "@/hooks/use-toast";
 import { CalendarCheck, MessageCircle, Sparkles, AlertTriangle, CreditCard, CheckCircle2, TrendingUp } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface Props {
   open: boolean;
@@ -20,11 +21,24 @@ interface Props {
 }
 
 const BookingFormDialog = ({ open, onOpenChange, serviceName, servicePrice }: Props) => {
+  const { user, isLoggedIn } = useAuth();
   const [form, setForm] = useState({
     name: "", phone: "", city: "", area: "", address: "", date: "", time: "", notes: "",
     symptoms: "", callType: "", pickupLocation: "", dropLocation: "", emergencyType: "",
     problemDescription: "", ambulanceType: "",
   });
+  
+  // Auto-fill from user profile when dialog opens
+  useEffect(() => {
+    if (open && isLoggedIn && user) {
+      setForm((prev) => ({
+        ...prev,
+        name: prev.name || user.name,
+        phone: prev.phone || user.phone,
+        address: prev.address || user.address || "",
+      }));
+    }
+  }, [open, isLoggedIn, user]);
   const [urgency, setUrgency] = useState<UrgencyLevel>("normal");
   const [submitting, setSubmitting] = useState(false);
   const [aiSuggestion, setAiSuggestion] = useState<{ service: string; isEmergency: boolean } | null>(null);
