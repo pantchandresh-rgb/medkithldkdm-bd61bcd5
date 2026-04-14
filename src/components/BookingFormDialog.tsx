@@ -11,6 +11,7 @@ import { calculatePrice, extendedAreas, type UrgencyLevel, type PriceBreakdown }
 import { openWhatsApp } from "@/lib/whatsapp";
 import { toast } from "@/hooks/use-toast";
 import { CalendarCheck, MessageCircle, Sparkles, AlertTriangle, CreditCard, CheckCircle2, TrendingUp } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface Props {
   open: boolean;
