@@ -1,4 +1,5 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { createContext, useContext, useState, useEffect, useCallback, ReactNode } from "react";
+import { getBookings, type BookingEntry } from "@/lib/bookings";
 
 export interface UserProfile {
   name: string;
@@ -12,7 +13,7 @@ interface AuthContextType {
   login: (profile: UserProfile) => void;
   logout: () => void;
   updateProfile: (profile: UserProfile) => void;
-  getUserBookings: () => import("@/lib/bookings").BookingEntry[];
+  getUserBookings: () => BookingEntry[];
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -37,17 +38,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, [user]);
 
-  const login = (profile: UserProfile) => setUser(profile);
-  const logout = () => setUser(null);
-  const updateProfile = (profile: UserProfile) => setUser(profile);
+  const login = useCallback((profile: UserProfile) => setUser(profile), []);
+  const logout = useCallback(() => setUser(null), []);
+  const updateProfile = useCallback((profile: UserProfile) => setUser(profile), []);
 
-  const getUserBookings = () => {
+  const getUserBookings = useCallback(() => {
     if (!user) return [];
-    const { getBookings } = require("@/lib/bookings");
-    return (getBookings() as import("@/lib/bookings").BookingEntry[]).filter(
-      (b) => b.phone === user.phone
-    );
-  };
+    return getBookings().filter((b) => b.phone === user.phone);
+  }, [user]);
 
   return (
     <AuthContext.Provider value={{ user, isLoggedIn: !!user, login, logout, updateProfile, getUserBookings }}>
