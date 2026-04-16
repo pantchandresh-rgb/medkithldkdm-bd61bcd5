@@ -92,6 +92,7 @@ const AdminDashboard = () => {
       paymentStatus: b.paymentStatus,
     }));
     setBookings([...websiteBookings, ...mockBookings]);
+    setDietitianRequests(getDietitianRequests());
   }, []);
 
   const filtered = bookings.filter((b) => {
