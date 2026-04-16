@@ -362,6 +362,75 @@ const AdminDashboard = () => {
               </div>
             )}
           </motion.div>
+
+          {/* Dietitian Consultation Requests */}
+          {activeTab === "Dietitian" && (
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-card rounded-2xl border border-border p-4 md:p-6 shadow-card space-y-4">
+              <h2 className="text-lg font-display font-semibold text-foreground flex items-center gap-2">
+                <Heart className="w-5 h-5 text-primary" /> Dietitian Consultation Requests
+              </h2>
+              {dietitianRequests.length === 0 ? (
+                <div className="py-16 text-center space-y-3">
+                  <Heart className="w-12 h-12 mx-auto text-muted-foreground/40" />
+                  <p className="text-muted-foreground font-medium">No dietitian requests yet</p>
+                </div>
+              ) : (
+                <div className="overflow-x-auto -mx-4 md:-mx-6">
+                  <div className="min-w-[700px] px-4 md:px-6">
+                    <Table>
+                      <TableHeader>
+                        <TableRow className="hover:bg-transparent">
+                          <TableHead className="font-semibold">Name</TableHead>
+                          <TableHead className="font-semibold">Phone</TableHead>
+                          <TableHead className="font-semibold">Concern</TableHead>
+                          <TableHead className="font-semibold">Preferred Time</TableHead>
+                          <TableHead className="font-semibold">Date</TableHead>
+                          <TableHead className="font-semibold">Status</TableHead>
+                          <TableHead className="font-semibold text-right">Actions</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {dietitianRequests.map((r, i) => (
+                          <TableRow key={r.id} className={i % 2 === 0 ? "bg-muted/30" : ""}>
+                            <TableCell className="font-medium text-foreground">{r.name}</TableCell>
+                            <TableCell className="text-muted-foreground">{r.phone}</TableCell>
+                            <TableCell className="text-foreground">{r.concern}</TableCell>
+                            <TableCell className="text-muted-foreground">{r.preferredTime || "—"}</TableCell>
+                            <TableCell className="text-muted-foreground whitespace-nowrap">{new Date(r.createdAt).toLocaleDateString()}</TableCell>
+                            <TableCell>
+                              <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold border ${
+                                r.status === "Pending" ? "bg-amber-100 text-amber-700 border-amber-200" :
+                                r.status === "Contacted" ? "bg-primary/10 text-primary border-primary/20" :
+                                "bg-emerald-100 text-emerald-700 border-emerald-200"
+                              }`}>{r.status}</span>
+                            </TableCell>
+                            <TableCell className="text-right">
+                              <div className="flex items-center justify-end gap-1">
+                                {r.status === "Pending" && (
+                                  <Button size="sm" variant="ghost" className="h-8 text-xs text-muted-foreground hover:text-primary" onClick={() => {
+                                    updateDietitianStatus(r.id, "Contacted");
+                                    setDietitianRequests(getDietitianRequests());
+                                  }}>Mark Contacted</Button>
+                                )}
+                                {r.status === "Contacted" && (
+                                  <Button size="sm" variant="ghost" className="h-8 text-xs text-muted-foreground hover:text-emerald-600" onClick={() => {
+                                    updateDietitianStatus(r.id, "Completed");
+                                    setDietitianRequests(getDietitianRequests());
+                                  }}>
+                                    <CheckCircle2 className="w-4 h-4" />
+                                  </Button>
+                                )}
+                              </div>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+                </div>
+              )}
+            </motion.div>
+          )}
         </main>
       </div>
     </div>
