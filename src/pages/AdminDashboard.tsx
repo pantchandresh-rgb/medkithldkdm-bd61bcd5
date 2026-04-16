@@ -69,6 +69,7 @@ const AdminDashboard = () => {
   const [cityFilter, setCityFilter] = useState("all");
   const [serviceFilter, setServiceFilter] = useState("all");
   const [bookings, setBookings] = useState<Booking[]>([]);
+  const [dietitianRequests, setDietitianRequests] = useState<DietitianRequest[]>([]);
 
   useEffect(() => {
     const storedBookings = getBookings();
