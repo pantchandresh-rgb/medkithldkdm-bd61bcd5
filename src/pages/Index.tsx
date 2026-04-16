@@ -5,6 +5,7 @@ import ServicesSection from "@/components/ServicesSection";
 import DoctorAmbulanceUSP from "@/components/DoctorAmbulanceUSP";
 import DoctorsSection from "@/components/DoctorsSection";
 import ElderlyCareSection from "@/components/ElderlyCareSection";
+import DietitianSection from "@/components/DietitianSection";
 import WhyBookCalcSection from "@/components/WhyBookCalcSection";
 import EmotionalBanners from "@/components/EmotionalBanners";
 import AreasSection from "@/components/AreasSection";
@@ -20,6 +21,7 @@ const Index = () => (
     <DoctorAmbulanceUSP />
     <DoctorsSection />
     <ElderlyCareSection />
+    <DietitianSection />
     <WhyBookCalcSection />
     <EmotionalBanners />
     <AreasSection />
